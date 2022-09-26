@@ -14,20 +14,14 @@ ApiConnector.current(response => {
 });
 
 let ratesBoard = new RatesBoard();
-/*ApiConnector.getStocks(response => {
-    if (response.success === true) {
-        ratesBoard.clearTable();
-        ratesBoard.fillTable(response.data);
-    }
-
-});*/
-
-
-let timerId = setInterval(ApiConnector.getStocks (response => {
-    if (response.success === true) {
-        ratesBoard.clearTable();
-        ratesBoard.fillTable(response.data);
-    } }),1000);
+let timerId = setInterval(() => {
+    ApiConnector.getStocks(response => {
+        if (response.success === true) {
+            ratesBoard.clearTable();
+            ratesBoard.fillTable(response.data);
+        }
+    });
+}, 1000);
 
 let moneyManager = new MoneyManager();
 moneyManager.addMoneyCallback = (data) => {
@@ -54,8 +48,6 @@ moneyManager.conversionMoneyCallback = (data) => {
 };
 
 
-
-
 let favoritesWidget = new FavoritesWidget();
 ApiConnector.getFavorites(response => {
     if (response.success === true) {
@@ -64,6 +56,7 @@ ApiConnector.getFavorites(response => {
         moneyManager.updateUsersList(response.data);
     }
 });
+
 
 favoritesWidget.addUserCallback = ({
     id,
@@ -82,9 +75,7 @@ favoritesWidget.addUserCallback = ({
             moneyManager.setMessage(false, response.error);
 
         }
-
     });
-
 };
 
 favoritesWidget.removeUserCallback = (id) => {
@@ -119,11 +110,3 @@ moneyManager.sendMoneyCallback = ({
         }
     });
 };
-
-/*## Получение текущих курсов валюты
-1. Создайте объект типа `RatesBoard`.
-2. Напишите функцию, которая будет выполнять запрос получения курсов валют.
-3. В случае успешного запроса, очищайте таблицу с данными (`clearTable`) и заполняйте её (`fillTable`) полученными данными.
-4. Вызовите данную функцию для получения текущих валют.
-5. Напишите интервал, который будет многократно выполняться (раз в минуту) и вызывать вашу функцию с получением валют.///НАПИСАТЬ */
-
